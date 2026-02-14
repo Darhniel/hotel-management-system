@@ -180,3 +180,21 @@ class RoomAuditLogView(APIView):
 #         room.status = request.data.get('status')
 #         room.save()
 #         return Response({"status": room.status})
+
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+import traceback
+
+def test_email(request):
+    try:
+        send_mail(
+            'Test from Render',
+            'If you see this, email works!',
+            None,  # uses DEFAULT_FROM_EMAIL
+            ['your-own-email@example.com'],  # send to yourself
+            fail_silently=False,
+        )
+        return HttpResponse("Email sent successfully!")
+    except Exception as e:
+        return HttpResponse(f"Error: {traceback.format_exc()}")
